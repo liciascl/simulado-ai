@@ -230,16 +230,12 @@ O objetivo é:
 Determinar uma rota de entregas que minimize a distância total percorrida (custo), respeitando a limitação de carga.
 
 Rúbrica:
-    * **0** - Não compila, não é possível testar a implementação.
-    
-    * **+0.2** - Implementou a heuristica hill climbing aleatória, mas sem otimizações.
 
-    * **+0.2** - Otimizou a heurísitca melhorando seu tempo de execução, mas ainda tem uma implementação sequencial.
-    
-    * **+0.6** - Paralelizou o algorítimo e conseguiu melhorar o tempo em relação a versão sequencial.
-    
-    * **+0.4** - Montou o arquivo SLURM de forma correta e exibiu uma tabela comprovando que a versão paralela é mais eficiente que a versão sequencial
-    
-    * **+0.6** - Conseguiu explicar os resultados obtidos nos seus testes com as otimizações aplicadas de forma clara e objetiva.
+* **0** - Não compila, não é possível testar a implementação.   
+* **+0.2** - Implementou a heuristica hill climbing aleatória, mas sem otimizações.
+* **+0.2** - Otimizou a heurísitca melhorando seu tempo de execução, mas ainda tem uma implementação sequencial.
+* **+0.6** - Paralelizou o algorítimo e conseguiu melhorar o tempo em relação a versão sequencial.
+* **+0.4** - Montou o arquivo SLURM de forma correta e exibiu uma tabela comprovando que a versão paralela é mais eficiente que a versão sequencial
+* **+0.6** - Conseguiu explicar os resultados obtidos nos seus testes com as otimizações aplicadas de forma clara e objetiva.
 
 
