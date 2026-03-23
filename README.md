@@ -1,7 +1,7 @@
-### Simulado da Avaliação Intermediária de Supercomp, 1 semestre de 2026
+# Simulado da Avaliação Intermediária de Supercomp, 1 semestre de 2026
 
-A resposta para questões teóricas devem estar em um arquivo "respostas_teoricas.txt"
 ## Questões Teóricas:
+A resposta para questões teóricas devem estar em um arquivo "respostas_teoricas.txt"
 
 1) O que é um sistema de HPC? (0.5 ponto)
 
