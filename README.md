@@ -1,4 +1,28 @@
 ### Simulado da Avaliação Intermediária de Supercomp, 1 semestre de 2026
+
+A resposta para questões teóricas devem estar em um arquivo "respostas_teoricas.txt"
+## Questões Teóricas:
+
+1) O que é um sistema de HPC? (0.5 ponto)
+
+2) Qual é a função do SLURM em um sistema de HPC? (0.5 ponto)
+
+3) Explique por que um loop com dependência entre iterações não pode ser paralelizado diretamente. (0.5 ponto)
+
+4) Qual a diferença entre paralelismo com memória compartilhada e paralelismo com memória distribuída. (0.5 ponto)
+
+
+## Questões práticas
+Para cada questão, você deve organizar sua resposta da seguinte forma:
+* Questões de implementação devem ser entregues em arquivos no formato: Qx.cpp (onde x é o número da questão)
+
+* Questões que exigem execução em cluster devem incluir também o respectivo arquivo de submissão: run_Qx.slurm
+
+* Questões teóricas devem ser respondidas em arquivos de texto: Qx.txt
+
+
+## **Exercício 1 - Otimizações em CPU - (2 pontos)**
+
 Abaixo temos um código base implementado de forma sequencial em CPU, da forma menos eficiente que eu consegui imaginar, ele realiza o cálculo da soma, média, quantidade de picos e quantidade de vales de um sensor fictício. Quando executado na fila **gpu** do cluster Franky, o programa produz os seguintes resultados:
 
 ```bash
@@ -10,7 +34,12 @@ Quantidade de vales: 123456
 Tempo CPU sequencial: 991.454 ms
 ```
 
+### Implemente as seguintes otimizções:
 
+- Melhore o acesso aos dados, usando passagem por referência ou por ponteiro **+0.2 pontos**
+- Aplicar Tilling para melhorar a localidade espacial e temporal e aproveitar melhor a memória cache **+0.5 pontos**
+- Aplicar paralelismo em CPU usando OpenMP **+0.8 pontos**
+- Criar um arquivo 'run.slurm' que solicita adequadamete os recursos de hardware para o Cluster Franky executar a versão com paralelismo em **CPU**. **+0.5 pontos**
 
 ```cpp
 #include <iostream>
@@ -111,16 +140,10 @@ int main() {
 
 ```
 
-### **Exercício 1 - Otimizações em CPU - (2 pontos)**
-Implemente as seguintes otimizções:
-
-- Melhore o acesso aos dados, usando passagem por referência ou por ponteiro **+0.2 pontos**
-- Aplicar Tilling para melhorar a localidade espacial e temporal e aproveitar melhor a memória cache **+0.5 pontos**
-- Aplicar paralelismo em CPU usando OpenMP **+0.8 pontos**
-- Criar um arquivo 'run.slurm' que solicita adequadamete os recursos de hardware para o Cluster Franky executar a versão com paralelismo em **CPU**. **+0.5 pontos**
 
 
-### **Exercício 2 — Cálculo de PI com Monte Carlo**
+
+## **Exercício 2 — Cálculo de PI com Monte Carlo**
 
 O código abaixo implementa o cálculo de PI usando o método de Monte Carlo de forma **sequencial**. Seu objetivo é otimizar este programa usando OpenMP.
 
@@ -192,7 +215,7 @@ int main(int argc, char** argv) {
 }
 ```
 
-### **Exercício 3 — Otimização de Rotas para Entregas com Bicicleta (2 pontos)**
+## **Exercício 3 — Otimização de Rotas para Entregas com Bicicleta (2 pontos)**
 
 Voltamos ao problema das entregas, mas agora estamos auxiliando o Rodolfo, um jovem audacioso que realiza entregas de bicicleta.
 
