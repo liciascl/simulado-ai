@@ -1,9 +1,4 @@
-# Antes de sair fazendo a prova!
-Respire fundo, leia as rúbricas com calma, crie a sua estratégia para conquistar a maior quantidade de pontos, você pode consultar o site da disciplina, o seu GitHub e suas anotações, só não utiliza o google, nem qualquer tipo de IA, não tente se comunicar com ninguém, não se esforce para receber um código de ética, não vale a pena a essa altura da vida. Te desejo boa sorte e prometo que vou corrigir a prova com muita boa vontade.
-
-
-## SuperComp-Sub-2025-2
-### Avaliação Subistitutiva de Supercomp, 2 semestre de 2025
+### Simulado da Avaliação Intermediária de Supercomp, 1 semestre de 2026
 Abaixo temos um código base implementado de forma sequencial em CPU, da forma menos eficiente que eu consegui imaginar, ele realiza o cálculo da soma, média, quantidade de picos e quantidade de vales de um sensor fictício. Quando executado na fila **gpu** do cluster Franky, o programa produz os seguintes resultados:
 
 ```bash
@@ -116,35 +111,107 @@ int main() {
 
 ```
 
-**Exercício 1 - Otimizações em CPU - 2 pontos**
+### **Exercício 1 - Otimizações em CPU - (2 pontos)**
 Implemente as seguintes otimizções:
 
-- Melhore o acesso aos dados, usando passagem por referência ou por ponteiro +0.2 pontos
-- Aplicar Tilling para melhorar a localidade espacial e temporal e aproveitar melhor a memória cache +0.5 pontos
-- Aplicar paralelismo em CPU usando OpenMP +0.8 pontos
-- Criar um arquivo 'run.slurm' que solicita adequadamete os recursos de hardware para o Cluster Franky executar a versão com paralelismo em **CPU**. +0.5 pontos
-
-**Exercício 2 - Otimizações em GPU - 3 pontos**
-
-Implemente as seguintes otimizções:
-
-* Alocação adequada dos dados da CPU para a GPU +0.2 pontos
-* Implementação dos kernels para realizar as operações em GPU de forma síncrona +2 pontos
-* O código compila com 'nvcc' e gera um executável +0.3 pontos
-* Criar um arquivo 'run.slurm' que solicita adequadamete os recursos de hardware para o Cluster Franky executar a versão com paralelismo em **GPU**. +0.5 pontos
-
-**Exercício 3 - Otimizações em GPU - 4 pontos**
-
-Implemente as seguintes otimizções:
-
-- Gerenciamento adequado dos dados para implementação em **GPU assíncrona** +1 ponto
-- Implementação dos kernels para realizar as operações em **GPU de forma assíncrona** +2 pontos
-- O código compila com 'nvcc' e gera um executável que apresenta corretamente a quantidade de picos, vales, média e a soma dos valores processados em GPU +0.5 pontos
-- Criar um arquivo 'run.slurm' que solicita adequadamete os recursos de hardware para o Cluster Franky executar a versão com paralelismo em **GPU**. +0.5 pontos
+- Melhore o acesso aos dados, usando passagem por referência ou por ponteiro **+0.2 pontos**
+- Aplicar Tilling para melhorar a localidade espacial e temporal e aproveitar melhor a memória cache **+0.5 pontos**
+- Aplicar paralelismo em CPU usando OpenMP **+0.8 pontos**
+- Criar um arquivo 'run.slurm' que solicita adequadamete os recursos de hardware para o Cluster Franky executar a versão com paralelismo em **CPU**. **+0.5 pontos**
 
 
+### **Exercício 2 — Cálculo de PI com Monte Carlo**
 
-Boa Prova!
+O código abaixo implementa o cálculo de PI usando o método de Monte Carlo de forma **sequencial**. Seu objetivo é otimizar este programa usando OpenMP.
+
+### **Parte 1 - Paralelismo com OpenMP (2 pontos)**
+
+* **0 pontos** → O aluno **não paralelizou** o código, ou a versão apresentada **não compila/não executa**.
+ 
+* **0.5 ponto** → O aluno tentou paralelizar, mas não tratou corretamente a variável compartilhada (`dentro`) causando **condição de corrida**. O programa roda, mas os resultados são inconsistentes.
+
+* **1 ponto** → O aluno paralelizou corretamente, garantindo que o código execute sem conflitos.
+
+* **2 pontos** -> O aluno paralelizou corretamente, garantindo que o código execute sem conflitos, ajustou o número de pontos e configurou corretamente os recursos no SLURM, de modo que o programa gera uma estimativa de PI com precisão 3,1415 em menos de 10 segundos.
+
+---
+
+### **Parte 2 - Distribuição com MPI (2 pontos)**
+Você deve:
+    - Distribuir o número total de pontos N entre os processos MPI
+    - Cada processo deve calcular sua contagem local de pontos 
+    - Utilizar sementes diferentes para o gerador de números aleatórios em cada processo
+    - Centralizar as respostas no Rank0 para exibir o valor de PI calculado.
+
+0 pontos → Não implementou MPI ou o código não compila/não executa
+0.5 ponto → Implementação incompleta, apresentando problemas como:
+            - todos os processos utilizam a mesma seed
+            - problema de distribuição de dados (todos os nós fazem o mesmo trabalho)
+
+2 pontos → Implementação correta, incluindo:
+            - distribuição adequada de N entre os processos
+            - uso de seeds independentes por processo
+            - cálculo correto de PI exibido pelo Rank 0 usando o resultado das contas realizadas nos nós de computação
+
+
+```cpp
+#include <iostream>
+#include <random>
+#include <chrono>
+#include <iomanip>
+using namespace std;
+
+int main(int argc, char** argv) {
+    long long N = (argc > 1 ? atoll(argv[1]) : 100000); // quantidade de pontos
+
+    mt19937 rng(42); // gerador de números aleatórios
+    uniform_real_distribution<double> dist(0.0, 1.0);
+
+    long long dentro = 0;
+
+    chrono::high_resolution_clock::time_point t0 = chrono::high_resolution_clock::now();
+
+    // Código sequencial
+    for (long long i = 0; i < N; i++) {
+        double x = dist(rng);
+        double y = dist(rng);
+        if (x * x + y * y <= 1.0) {
+            dentro++;
+        }
+    }
+
+    chrono::high_resolution_clock::time_point t1 = chrono::high_resolution_clock::now();
+
+    double pi = 4.0 * (double)dentro / (double)N;
+    double tempo = chrono::duration<double>(t1 - t0).count();
+    cout << fixed << setprecision(4);
+    cout << "N = " << N << "  pi = " << pi << "  tempo = " << tempo << "s" << endl;
+
+    return 0;
+}
+```
+
+### **Exercício 3 — Otimização de Rotas para Entregas com Bicicleta (2 pontos)**
+
+Voltamos ao problema das entregas, mas agora estamos auxiliando o Rodolfo, um jovem audacioso que realiza entregas de bicicleta.
+
+Devemos considerar que Rodolfo possui limitações físicas e operacionais:
+    - Ele consegue carregar no máximo 2 pacotes por vez
+    - Precisa retornar ao ponto de coleta sempre que esvaziar a carga
+    - Sua meta diária é realizar 60 entregas
+    - Os pontos de entrega estão [disponívies aqui](lista_pontos.txt)
+
+O objetivo é:
+
+Determinar uma rota de entregas que minimize a distância total percorrida (custo), respeitando a limitação de carga.
+
+Rúbrica:
+    0 - Não compila, não é possível testar a implementação.
+    +0.2 - Implementou a heuristica hill climbing aleatória, mas sem otimizações.
+    +0.2 - Otimizou a heurísitca melhorando seu tempo de execução, mas ainda tem uma implementação sequencial.
+    +0.6 - Paralelizou o algorítimo e conseguiu melhorar o tempo em relação a versão sequencial.
     
+    +0.4 - Montou o arquivo SLURM de forma correta e exibiu uma tabela comprovando que a versão paralela é mais eficiente que a versão sequencial
+    +0.6 - Conseguiu explicar os resultados obtidos nos seus testes com as otimizações aplicadas de forma clara e objetiva.
 
 
