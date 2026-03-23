@@ -143,15 +143,16 @@ Você deve:
     - Utilizar sementes diferentes para o gerador de números aleatórios em cada processo
     - Centralizar as respostas no Rank0 para exibir o valor de PI calculado.
 
-0 pontos → Não implementou MPI ou o código não compila/não executa
-0.5 ponto → Implementação incompleta, apresentando problemas como:
-            - todos os processos utilizam a mesma seed
-            - problema de distribuição de dados (todos os nós fazem o mesmo trabalho)
+* **0 pontos** → Não implementou MPI ou o código não compila/não executa
 
-2 pontos → Implementação correta, incluindo:
-            - distribuição adequada de N entre os processos
-            - uso de seeds independentes por processo
-            - cálculo correto de PI exibido pelo Rank 0 usando o resultado das contas realizadas nos nós de computação
+* **0.5 ponto** → Implementação incompleta, apresentando problemas como:
+    Todos os processos utilizam a mesma seed;
+    Problema de distribuição de dados (todos os nós fazem o mesmo trabalho)
+
+* **2 pontos** → Implementação correta, incluindo:
+    Distribuição adequada de N entre os processos;
+    Uso de seeds independentes por processo;
+    Cálculo correto de PI exibido pelo Rank 0 usando o resultado das contas realizadas nos nós de computação
 
 
 ```cpp
